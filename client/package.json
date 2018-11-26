@@ -1,23 +1,20 @@
 {
-  "name": "chat_bot",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "dialogflow": "^0.7.0",
-    "express": "^4.16.4",
+    "materialize-css": "^1.0.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-materialize": "^2.5.0",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "backend":"nodemon App.js",
-    "frontend":"npm run start --prefix client",
-    "dev":"concurrently \"npm run backend\" \"npm run frontend\""
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -27,8 +24,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "concurrently": "^4.1.0"
-  }
+  ]
 }
