@@ -1,9 +1,12 @@
 'use strict'
 
 const dialogflow = require('dialogflow')
-const config = require('../src/config/keys')
+const config = require('../config/keys')
 const structjson = require('./structjson')
 const projectId = config.googleProjectId;
+const sessionId = config.dialogFlowSessionId;
+const langaugeCode = config.dialgFlowSessionLanaugeCode;
+
 
 const credentials = {
     client_email : config.googleClientEmail,
@@ -11,11 +14,12 @@ const credentials = {
 }
 
 const sessionClient = new dialogflow.SessionsClient({projectId, credentials});
-const sessionPath = sessionClient.sessionPath(config.googleProjectId, config.dialogFlowSessionId);
+
 
 
 module.exports = {
-    textQuery : async function(text, parameters) {
+    textQuery : async function(text, userID, parameters) {
+        let sessionPath = sessionClient.sessionPath(projectId, sessionId+userID);
         let self = module.exports
         const request = {
             session: sessionPath,
@@ -37,8 +41,9 @@ module.exports = {
         return responses;
     },
 
-    eventQuery : async function(event, parameters = {}) {
+    eventQuery : async function(event,userID, parameters = {}) {
         let self = module.exports
+        let sessionPath = sessionClient.sessionPath(projectId, sessionId+userID);
         const request = {
             session: sessionPath,
             queryInput: {
