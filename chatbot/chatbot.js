@@ -2,11 +2,16 @@
 
 const dialogflow = require('dialogflow')
 const config = require('../config/keys')
-const structjson = require('./structjson')
+const structjson = require('./structjson');
+const mongoose = require('mongoose');
+require('../models/Registration')
+//const mongoose = require('../models/Registration')
+
 const projectId = config.googleProjectId;
 const sessionId = config.dialogFlowSessionId;
 const langaugeCode = config.dialgFlowSessionLanaugeCode;
 
+const Registration = mongoose.model('registration');
 
 const credentials = {
     client_email : config.googleClientEmail,
@@ -62,6 +67,32 @@ module.exports = {
 
 
     handleAction: function(responses){
+         let queryResult = responses[0].queryResult;
+        let self = module.exports();
+
+        switch(queryResult.action) {
+            case'reacommand_courses-yes':
+                if(queryResult.allRequiredParamsPresent) {
+                    self.saveRegistration(queryResult.parameters.fields)
+                }
+            break;
+        }
         return responses
+    },
+
+     saveRegistration: async function(fields){
+        const registrations = new Registration({
+            name: fields.name.stringValue,
+            address : fields.address.stringValue,
+            phone : fields.phone.stringValue,
+            email : fields.email.stringValue,
+            dateSent : Date.now()
+        })
+        try {
+            let reg = await registrations.save();
+            console.log({reg})
+        } catch(err) {
+            console.log({err})
+        }
     }
 }
